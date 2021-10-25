@@ -1,11 +1,12 @@
+import asyncio
 import os
-#import httpx
+# import httpx
+from datetime import datetime
+
 from httpx import AsyncClient
 from discord import Embed
-from discord.ext import commands
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
-import ctypes
-libgcc_s = ctypes.CDLL('libgcc_s.so.1')
 from schemas import Image
 
 load_dotenv()
@@ -47,11 +48,16 @@ async def get_10_random_images() -> list[Image] or []:
         images.append(await get_random_image())
     return images
 
+
+async def get_default_channel(guild):
+    return next((x for x in guild.text_channels if x.position == 0), None)
+
 @bot.event
 async def on_ready():
     print("Online")
-    print(await get_10_random_images())
-
+    for guild in bot.guilds:
+        channel = await get_default_channel(guild)
+        print(channel.id)
 
 @bot.command()
 async def cenzo(ctx):
@@ -59,5 +65,24 @@ async def cenzo(ctx):
     embed = send_embed_image(image.public_url)
     await ctx.send(embed=embed)
 
+async def send_random_10_images():
+    await bot.wait_until_ready()
+    while not bot.is_closed():
 
+        hour = int(datetime.now().time().strftime("%H"))
+        minutes = int(datetime.now().time().strftime("%M"))
+        print(f"{hour}:{minutes}")
+        if hour == 21 and minutes == 37:
+            print('Rozpoczynamy godzine papierzowa')
+            for guild in bot.guilds:
+                default_channel = await get_default_channel(guild)
+                channel = bot.get_channel(default_channel.id)
+                random_images = await get_10_random_images()
+                for image in random_images:
+                    embed = send_embed_image(image.public_url)
+                    await channel.send(embed=embed)
+
+        await asyncio.sleep(60)
+
+bot.loop.create_task(send_random_10_images())
 bot.run(TOKEN)
