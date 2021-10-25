@@ -50,7 +50,7 @@ async def get_10_random_images() -> list[Image] or []:
 
 
 async def get_default_channel(guild):
-    return next((x for x in guild.text_channels if x.position == 0), None)
+    return next((x for x in guild.text_channels if x.name == "general"), None)
 
 @bot.event
 async def on_ready():
