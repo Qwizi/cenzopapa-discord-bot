@@ -59,7 +59,7 @@ async def send_10_random_images(guilds):
         channel = bot.get_channel(default_channel.id)
         random_images = await get_10_random_images()
         for image in random_images:
-            embed = send_embed_image(image.public_url)
+            embed = send_embed_image(image.url)
             await channel.send(embed=embed)
 
 @bot.event
@@ -74,6 +74,7 @@ async def on_ready():
 @bot.command()
 async def cenzo(ctx):
     image = await get_random_image()
+    print(image)
     embed = send_embed_image(image.url)
     await ctx.send(embed=embed)
 
