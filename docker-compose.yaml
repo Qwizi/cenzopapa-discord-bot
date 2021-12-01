@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  bot:
+    build: .
+    command: python bot.py
+    restart: unless-stopped
+    environment:
+      - TOKEN
+      - API_URL
