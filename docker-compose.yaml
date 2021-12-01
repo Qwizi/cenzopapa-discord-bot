@@ -4,3 +4,6 @@ services:
   bot:
     build: .
     command: python bot.py
+    environment:
+      - TOKEN
+      - API_URL
