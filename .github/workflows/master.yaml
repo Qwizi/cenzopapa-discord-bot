@@ -16,6 +16,7 @@ jobs:
           ssh_host: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.KEY }}
           ssh_user: ${{ secrets.USER }}
+          workspace: ${{ secrets.WORKSPACE }}
           env_args: ${{ secrets.ENV_ARGS }}
     - uses: Ilshidur/action-discord@master
       name: Discord notification
