@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: executing remote ssh commands using ssh key
-      uses: appleboy/ssh-action@master
+    - uses: alex-ac/github-action-ssh-docker-compose@master
+      name: Docker-Compose Remote Deployment
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.KEY }}
-        script: ls
+          ssh_host: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.KEY }}
+          ssh_user: ${{ secrets.USER }}
