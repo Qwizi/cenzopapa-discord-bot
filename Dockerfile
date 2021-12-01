@@ -1,7 +1,7 @@
 FROM python:3.9-alpine
 
 WORKDIR /app
-
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 RUN apk add --no-cache --virtual .pynacl_deps build-base python3-dev libffi-dev
 
 COPY ./requirements.txt /app/requirements.txt
