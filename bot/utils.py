@@ -37,12 +37,12 @@ async def get_default_channel(guild):
 
 async def send_10_random_images(guilds):
     try:
+        random_images = await get_10_random_images()
         for guild in guilds:
             default_channel = await get_default_channel(guild)
             channel = bot.get_channel(default_channel.id)
-            random_images = await get_10_random_images()
             for image in random_images:
-                embed = send_embed_image(image.url)
+                embed = send_embed_image(image)
                 await channel.send(embed=embed)
     except (httpx.ConnectError, httpx.HTTPError):
         for guild in guilds:
