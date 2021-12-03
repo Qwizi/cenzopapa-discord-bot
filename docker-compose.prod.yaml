@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  bot:
+    image: qwizii/cenzopapa-discord-bot:latest
+    command: python bot/main.py
+    restart: unless-stopped
+    environment:
+      - TOKEN
+      - API_URL
