@@ -1,11 +1,11 @@
 import asyncio
 from datetime import datetime
+from re import match
 
 import httpx
 
 from instances import bot, TOKEN, tz, API_ERROR
 from utils import send_10_random_images, get_random_image, send_embed_image
-
 
 
 @bot.command()
@@ -24,7 +24,6 @@ async def task_cenzo():
     try:
         await bot.wait_until_ready()
         while not bot.is_closed():
-
             hour = int(datetime.now(tz).time().strftime("%H"))
             minutes = int(datetime.now(tz).time().strftime("%M"))
             print(f"{hour}:{minutes}")
@@ -33,6 +32,7 @@ async def task_cenzo():
 
             await asyncio.sleep(60)
     except (httpx.ConnectError, httpx.HTTPError):
+
         await asyncio.sleep(60)
 
 
@@ -42,6 +42,12 @@ async def on_ready():
     print("Online")
     print(f"Bot jest dodany na {bot_guilds_len} serwerach")
 
+
+@bot.event
+async def on_message(message):
+    for x in message.mentions:
+        if x == bot.user:
+            await message.channel.send("A dostałes kiedyś z kremówki?")
 
 bot.loop.create_task(task_cenzo())
 bot.run(TOKEN)
