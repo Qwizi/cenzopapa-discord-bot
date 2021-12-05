@@ -38,7 +38,6 @@ async def task_cenzo():
 
         await asyncio.sleep(60)
 
-
 @bot.command()
 async def cenzo(ctx):
     try:
@@ -73,6 +72,12 @@ async def on_message(message):
             await message.channel.send("A dostałes kiedyś z kremówki?")
     await bot.process_commands(message)
 
+
+@bot.event
+async def on_message(message):
+    for x in message.mentions:
+        if x == bot.user:
+            await message.channel.send("A dostałes kiedyś z kremówki?")
 
 bot.loop.create_task(task_cenzo())
 bot.run(TOKEN)
