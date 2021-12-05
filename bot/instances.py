@@ -10,9 +10,9 @@ tz = pytz.timezone('Europe/Warsaw')
 
 TOKEN = os.getenv('TOKEN')
 API_URL = os.getenv('API_URL')
-LOCAL = int(os.getenv('LOCAL'), 0)
-PAPA_HOUR = int(os.getenv("PAPA_HOUR", 21))
-PAPA_MIN = int(os.getenv("PAPA_MIN", 37))
+LOCAL = os.getenv('LOCAL'), 0
+PAPA_HOUR = os.getenv("PAPA_HOUR", 21)
+PAPA_MIN = os.getenv("PAPA_MIN", 37)
 
 API_ERROR = "Wystąpil problem z API"
 
