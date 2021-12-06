@@ -22,21 +22,21 @@ async def get_random_image() -> Image or None:
         return None
 
 
-async def get_10_random_images() -> list[Image] or []:
+async def get_random_images(count=5) -> list[Image] or []:
     images = []
-    for i in range(5):
+    for i in range(count):
         image = await get_random_image()
         while image in images:
             image = await get_random_image()
-        images.append(await get_random_image())
+        images.append(image)
     return images
 
 
 async def get_default_channel(guild):
-    return next((x for x in guild.text_channels if x.position == 0 or x.position == 1), None)
+    return next((x for x in guild.text_channels if x.permissions_for(guild.me).send_messages), None)
 
 
-async def send_10_random_images(random_images, guilds):
+async def send_random_images(random_images, guilds):
     try:
         print(f"Pobralem {len(random_images)} cenzo")
         for guild in guilds:
