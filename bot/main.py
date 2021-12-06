@@ -4,7 +4,7 @@ import httpx
 from datetime import datetime
 from instances import bot, TOKEN, tz, API_ERROR, PAPA_HOUR, PAPA_MIN, watching_kids, \
     prepare_to_papa_hour
-from utils import send_10_random_images, get_random_image, create_embed_image, get_10_random_images
+from utils import send_random_images, get_random_image, create_embed_image, get_random_images, get_default_channel
 
 
 async def task_cenzo():
@@ -25,11 +25,11 @@ async def task_cenzo():
                 # Ustawiamy status na 21:37
                 await bot.change_presence(activity=prepare_to_papa_hour)
                 # Pobieramy 5 cenzo
-                images = await get_10_random_images()
+                images = await get_random_images()
                 # Czekamy na godzine papiezowa
                 await asyncio.sleep(120)
                 #  Wysylamy 5 cenzo
-                await send_10_random_images(images, bot.guilds)
+                await send_random_images(images, bot.guilds)
                 # Odczekujemy 2 minuty
                 await asyncio.sleep(120)
             await asyncio.sleep(10)
@@ -61,7 +61,8 @@ async def on_ready():
     print("Online")
     print(f"Bot jest dodany na {bot_guilds_len} serwerach")
     await bot.change_presence(activity=watching_kids)
-
+    random_images = await get_random_images()
+    await send_random_images(random_images=random_images, guilds=bot.guilds)
 
 @bot.event
 async def on_message(message):
