@@ -32,8 +32,8 @@ async def task_cenzo():
                 await send_random_images(images, bot.guilds)
                 # Odczekujemy 2 minuty
                 await asyncio.sleep(120)
-            await asyncio.sleep(10)
-            await bot.change_presence(activity=watching_kids)
+                await bot.change_presence(activity=watching_kids)
+            await asyncio.sleep(30)
     except (httpx.ConnectError, httpx.HTTPError):
 
         await asyncio.sleep(60)
