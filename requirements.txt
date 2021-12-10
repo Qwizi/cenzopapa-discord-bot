@@ -3,7 +3,7 @@ anyio==3.4.0
 asgiref==3.4.1
 async-timeout==3.0.1
 attrs==21.2.0
-cenzopapa-sdk @ https://github.com/Qwizi/cenzopapa-sdk/archive/refs/tags/v1.0.2.tar.gz
+cenzopapa-sdk==1.0.3
 certifi==2021.10.8
 chardet==4.0.0
 charset-normalizer==2.0.7
