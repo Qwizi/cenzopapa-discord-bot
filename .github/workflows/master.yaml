@@ -17,6 +17,7 @@ jobs:
             ssh_host: ${{ secrets.HOST }}
             ssh_private_key: ${{ secrets.KEY }}
             ssh_user: ${{ secrets.USER }}
+            ssh_port: ${{ secrets.PORT }}
             workspace: ${{ secrets.WORKSPACE }}
             env_args: ${{ secrets.ENV_ARGS }}
             docker_compose_filename: docker-compose.yaml
