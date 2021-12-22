@@ -61,6 +61,7 @@ async def on_ready():
     print("Online")
     print(f"Bot jest dodany na {bot_guilds_len} serwerach")
     await bot.change_presence(activity=watching_kids)
+    print(await get_random_image())
 
 @bot.event
 async def on_message(message):
