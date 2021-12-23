@@ -36,6 +36,7 @@ async def task_cenzo():
     except (httpx.ConnectError, httpx.HTTPError):
         await asyncio.sleep(60)
 
+
 @bot.command()
 async def cenzo(ctx):
     try:
@@ -68,5 +69,9 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-bot.loop.create_task(task_cenzo())
-bot.run(TOKEN)
+def main():
+    bot.loop.create_task(task_cenzo())
+    bot.run(TOKEN)
+
+
+main()
