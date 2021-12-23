@@ -15,6 +15,7 @@ ENV PYTHONUNBUFFERED 1
 #Install dependencies
 RUN apk update \
   && apk add --no-cache libressl-dev \
+    musl-dev \
     libffi-dev \
     gcc \
     python3-dev
