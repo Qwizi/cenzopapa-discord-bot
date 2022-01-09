@@ -1,10 +1,10 @@
 import os
-import discord
+from disnake.activity import Game
 
 import pytz
 from cenzopapa import Cenzopapa
-from discord.ext import commands
-from dislash import InteractionClient
+from disnake.ext import commands
+from disnake import Activity, Game
 from dotenv import load_dotenv
 load_dotenv()
 tz = pytz.timezone('Europe/Warsaw')
@@ -18,8 +18,7 @@ PAPA_MIN = os.getenv("PAPA_MIN", 37)
 API_ERROR = "Wystąpil problem z API"
 
 api = Cenzopapa(API_URL)
-bot = commands.Bot(command_prefix="??" if LOCAL == 1 else "?")
-inter_client = InteractionClient(bot)
-watching_kids = discord.Activity(name='Dzieci', type=discord.ActivityType.watching)
-prepare_to_papa_hour = discord.Game(name='21:37')
-die = discord.Game(name='Nie zyje')
+bot = commands.Bot(command_prefix="??" if LOCAL == 1 else "?", test_guilds=[583717343255986178, 847524176054845440], sync_commands_debug=True)
+watching_kids = Game(name='Dzieci')
+prepare_to_papa_hour = Game(name='21:37')
+die = Game(name='Nie zyje')
