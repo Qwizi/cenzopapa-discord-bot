@@ -53,7 +53,6 @@ async def task_cenzo():
     except (httpx.ConnectError, httpx.HTTPError):
         await asyncio.sleep(60)
 
-
 @bot.slash_command(
     name="cenzo",
     description="Cenzo commands"
@@ -93,6 +92,11 @@ async def status(inter: disnake.ApplicationCommandInteraction):
     ]
     if not inter.author.id == 418851232233553922:
         await inter.edit_original_message(content=choice(status))
+
+@cenzo.sub_command(description="Latency")
+async def latency(inter: disnake.ApplicationCommandInteraction):
+    await inter.response.defer()
+    await inter.edit_original_message(content=bot.latency)
 
 @bot.event
 async def on_ready():
