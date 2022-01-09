@@ -1,4 +1,5 @@
 import asyncio
+import disnake
 import httpx
 import logging
 
@@ -18,7 +19,7 @@ from random import choice
 from datetime import datetime
 
 from instances import bot, TOKEN, tz, API_ERROR, PAPA_HOUR, PAPA_MIN, watching_kids, \
-    prepare_to_papa_hour, inter_client
+    prepare_to_papa_hour
 from utils import send_random_images, get_random_image, create_embed_image, get_random_images, get_default_channel
 
 
@@ -53,16 +54,16 @@ async def task_cenzo():
         await asyncio.sleep(60)
 
 
-@inter_client.slash_command(
+@bot.slash_command(
     name="cenzo",
     description="Cenzo commands"
 )
-async def cenzo(ctx):
+async def cenzo(ctx: disnake.ApplicationCommandInteraction):
     pass
 
 
 @cenzo.sub_command(description="Send random cenzo")
-async def random(inter):
+async def random(inter: disnake.ApplicationCommandInteraction):
     try:
         logger.info("Pobieram loswe zdjecie")
         image = await get_random_image()
@@ -71,13 +72,13 @@ async def random(inter):
             raise httpx.HTTPError(message=API_ERROR)
         embed = await create_embed_image(image)
         logger.info(f"Wysyłam losowe zdjecie do {inter.author.name}")
-        await inter.reply(embed=embed)
+        await inter.response.send_message(embed=embed)
     except (httpx.ConnectError, httpx.HTTPError):
-        await inter.reply(API_ERROR)
+        await inter.response.send_message(API_ERROR)
 
 
 @cenzo.sub_command(description="Status")
-async def status(inter):
+async def status(inter: disnake.ApplicationCommandInteraction):
     status = [
         'Nie żyje',
         "Gryzie piach", 
@@ -89,7 +90,7 @@ async def status(inter):
         "Przeniósł sie na łono Abrahama",
     ]
     if not inter.author.id == 418851232233553922:
-        await inter.reply(choice(status))
+        await inter.response.send_message(choice(status))
 
 @bot.event
 async def on_ready():

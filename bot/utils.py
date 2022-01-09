@@ -1,8 +1,7 @@
 import asyncio
+from disnake.embeds import Embed
 import httpx
 from cenzopapa.schemas import Image
-from discord import Embed
-
 from instances import bot, api, API_ERROR, die
 
 
