@@ -15,6 +15,7 @@ async def create_embed_image(image: Image) -> Embed:
 async def get_random_image() -> Image or None:
     try:
         image, _ = await api.image.random()
+        print(image)
         return image
     except Exception as e:
         print(e)
