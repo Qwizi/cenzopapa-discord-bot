@@ -64,6 +64,7 @@ async def cenzo(ctx: disnake.ApplicationCommandInteraction):
 
 @cenzo.sub_command(description="Send random cenzo")
 async def random(inter: disnake.ApplicationCommandInteraction):
+    await inter.response.defer()
     try:
         logger.info("Pobieram loswe zdjecie")
         image = await get_random_image()
@@ -72,13 +73,14 @@ async def random(inter: disnake.ApplicationCommandInteraction):
             raise httpx.HTTPError(message=API_ERROR)
         embed = await create_embed_image(image)
         logger.info(f"Wysyłam losowe zdjecie do {inter.author.name}")
-        await inter.response.send_message(embed=embed)
+        await inter.edit_original_message(embed=embed)
     except (httpx.ConnectError, httpx.HTTPError):
-        await inter.response.send_message(API_ERROR)
+        await inter.edit_original_message(content=API_ERROR)
 
 
 @cenzo.sub_command(description="Status")
 async def status(inter: disnake.ApplicationCommandInteraction):
+    await inter.response.defer()
     status = [
         'Nie żyje',
         "Gryzie piach", 
@@ -90,7 +92,7 @@ async def status(inter: disnake.ApplicationCommandInteraction):
         "Przeniósł sie na łono Abrahama",
     ]
     if not inter.author.id == 418851232233553922:
-        await inter.response.send_message(choice(status))
+        await inter.edit_original_message(content=choice(status))
 
 @bot.event
 async def on_ready():
