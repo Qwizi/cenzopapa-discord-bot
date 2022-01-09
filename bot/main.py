@@ -1,9 +1,24 @@
 import asyncio
 import httpx
+import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger()
+
+
+from random import choice
 from datetime import datetime
+
 from instances import bot, TOKEN, tz, API_ERROR, PAPA_HOUR, PAPA_MIN, watching_kids, \
-    prepare_to_papa_hour
+    prepare_to_papa_hour, inter_client
 from utils import send_random_images, get_random_image, create_embed_image, get_random_images, get_default_channel
 
 
@@ -19,13 +34,14 @@ async def task_cenzo():
             hour, minutes = await get_time()
 
             if hour == PAPA_HOUR and minutes == PAPA_MIN - 2:
-                print("Przygotowuje sie do 21:37")
+                logger.info("Przygotowuje sie do 21:37")
                 # Ustawiamy status na 21:37
                 await bot.change_presence(activity=prepare_to_papa_hour)
                 # Pobieramy 5 cenzo
                 images = await get_random_images()
                 # Czekamy na godzine papiezowa
                 await asyncio.sleep(120)
+                logger.info("Wysylam 5 losowych cenzo")
                 #  Wysylamy 5 cenzo
                 await send_random_images(images, bot.guilds)
                 # Odczekujemy 2 minuty
@@ -37,41 +53,51 @@ async def task_cenzo():
         await asyncio.sleep(60)
 
 
-@bot.command()
+@inter_client.slash_command(
+    name="cenzo",
+    description="Cenzo commands"
+)
 async def cenzo(ctx):
+    pass
+
+
+@cenzo.sub_command(description="Send random cenzo")
+async def random(inter):
     try:
+        logger.info("Pobieram loswe zdjecie")
         image = await get_random_image()
+        logger.info(f"Pobralem losowe zdjecie {image.url}")
         if not image:
             raise httpx.HTTPError(message=API_ERROR)
         embed = await create_embed_image(image)
-        await ctx.send(embed=embed)
+        logger.info(f"Wysyłam losowe zdjecie do {inter.author.name}")
+        await inter.reply(embed=embed)
     except (httpx.ConnectError, httpx.HTTPError):
-        await ctx.send(API_ERROR)
+        await inter.reply(API_ERROR)
 
 
-@bot.command()
-async def status(ctx):
-    await ctx.send("Nie żyje")
-
+@cenzo.sub_command(description="Status")
+async def status(inter):
+    status = [
+        'Nie żyje',
+        "Gryzie piach", 
+        "Kopnął w kalendarz",
+        "Dokonał żywota",
+        "Przeniósł sie na tamten świat",
+        "Zasnął na wieki",
+        "Wyzionął ducha",
+        "Przeniósł sie na łono Abrahama",
+    ]
+    if not inter.author.id == 418851232233553922:
+        await inter.reply(choice(status))
 
 @bot.event
 async def on_ready():
     bot_guilds_len = len(bot.guilds)
-    print("Online")
-    print(f"Bot jest dodany na {bot_guilds_len} serwerach")
+    logger.info(f"Bot jest online")
+    logger.info(f"Bot jest dodany na {bot_guilds_len} serwerach")
     await bot.change_presence(activity=watching_kids)
 
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    await bot.process_commands(message)
-
-
-def main():
-    bot.loop.create_task(task_cenzo())
-    bot.run(TOKEN)
-
-
-main()
+bot.loop.create_task(task_cenzo())
+bot.run(TOKEN)
