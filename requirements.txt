@@ -1,4 +1,4 @@
-aiohttp==3.7.4.post0
+aiohttp==3.8.0.post0
 anyio==3.4.0
 asgiref==3.4.1
 async-timeout==3.0.1
@@ -11,7 +11,7 @@ decorators==2.0.7
 disnake==2.3.0
 h11==0.12.0
 httpcore==0.14.3
-httpx==0.21.1
+httpx==0.23.0
 idna==3.3
 multidict==5.2.0
 python-dotenv==0.19.2
